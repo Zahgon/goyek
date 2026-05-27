@@ -40,86 +40,51 @@ type Deps []*DefinedTask
 
 // Name returns the name of the task.
 func (r *DefinedTask) Name() string {
-	return r.name
+	_ = "STUB: not implemented"
+
+	// SetName changes the name of the task.
+	return ""
 }
 
-// SetName changes the name of the task.
-func (r *DefinedTask) SetName(s string) {
-	if _, ok := r.flow.tasks[s]; ok {
-		panic("task with the same name is already defined")
-	}
-	oldName := r.name
-	r.flow.tasks[s] = r
-	delete(r.flow.tasks, oldName)
-	r.name = s
-}
+func (r *DefinedTask) SetName(s string) { _ = "STUB: not implemented"; return }
 
 // Usage returns the description of the task.
 func (r *DefinedTask) Usage() string {
-	return r.usage
+	_ = "STUB: not implemented"
+
+	// SetUsage sets the description of the task.
+	return ""
 }
 
-// SetUsage sets the description of the task.
 func (r *DefinedTask) SetUsage(s string) {
-	r.usage = s
+	_ = "STUB: not implemented"
+
+	// Action returns the action of the task.
+	return
 }
 
-// Action returns the action of the task.
 func (r *DefinedTask) Action() func(a *A) {
-	return r.action
+	_ = "STUB: not implemented"
+
+	// SetAction changes the action of the task.
+	return nil
 }
 
-// SetAction changes the action of the task.
 func (r *DefinedTask) SetAction(fn func(a *A)) {
-	r.action = fn
+	_ = "STUB: not implemented"
+
+	// Deps returns all task's dependencies.
+	return
 }
 
-// Deps returns all task's dependencies.
-func (r *DefinedTask) Deps() Deps {
-	if len(r.deps) == 0 {
-		return nil
-	}
-	deps := make(Deps, len(r.deps))
-	copy(deps, r.deps)
-	return deps
-}
+func (r *DefinedTask) Deps() Deps { _ = "STUB: not implemented"; return *new(Deps) }
 
 // SetDeps sets all task's dependencies.
-func (r *DefinedTask) SetDeps(deps Deps) {
-	if len(deps) == 0 {
-		r.deps = nil
-		return
-	}
-
-	for _, dep := range deps {
-		if !r.flow.isDefined(dep.Name(), dep.flow) {
-			panic("dependency was not defined: " + dep.Name())
-		}
-	}
-
-	visited := map[string]bool{}
-	if ok := r.noCycle(deps, visited); !ok {
-		panic("circular dependency")
-	}
-	r.deps = deps
-}
+func (r *DefinedTask) SetDeps(deps Deps) { _ = "STUB: not implemented"; return }
 
 func (r *DefinedTask) noCycle(deps Deps, visited map[string]bool) bool {
-	if len(deps) == 0 {
-		return true
-	}
-	for _, dep := range deps {
-		name := dep.name
-		if visited[name] {
-			continue // already checked this branch
-		}
-		visited[name] = true
-		if name == r.name {
-			return false
-		}
-		if !r.noCycle(dep.deps, visited) {
-			return false
-		}
-	}
-	return true
+	_ = "STUB: not implemented"
+	return false
 }
+
+// already checked this branch

@@ -78,9 +78,4 @@ func main() {
 	goyek.Main(tasks, opts...)
 }
 
-func usage() {
-	fmt.Println("Usage of build: [tasks] [flags] [--] [args]")
-	goyek.Print()
-	fmt.Println("Flags:")
-	flag.PrintDefaults()
-}
+func usage() { _ = "STUB: not implemented"; return }

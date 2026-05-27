@@ -10,24 +10,11 @@ type syncWriter struct {
 	mu     sync.Mutex
 }
 
-func (w *syncWriter) Write(p []byte) (int, error) {
-	w.mu.Lock()
-	defer w.mu.Unlock()
-	return w.writer.Write(p)
-}
+func (w *syncWriter) Write(p []byte) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
-func (w *syncWriter) WriteString(s string) (int, error) {
-	w.mu.Lock()
-	defer w.mu.Unlock()
-	return io.WriteString(w.writer, s)
-}
+func (w *syncWriter) WriteString(s string) (int, error) { _ = "STUB: not implemented"; return 0, nil }
 
 var _ io.StringWriter = (*syncWriter)(nil)
 
 // SyncWriter synchronizes writes to the underlying writer.
-func SyncWriter(w io.Writer) io.Writer {
-	if sw, ok := w.(*syncWriter); ok {
-		return sw
-	}
-	return &syncWriter{writer: w}
-}
+func SyncWriter(w io.Writer) io.Writer { _ = "STUB: not implemented"; return *new(io.Writer) }

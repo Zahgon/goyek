@@ -3,13 +3,7 @@ package goyek
 import (
 	"context"
 	"errors"
-	"fmt"
 	"io"
-	"os"
-	"os/signal"
-	"sort"
-	"strings"
-	"text/tabwriter"
 )
 
 // Flow is the root type of the package.
@@ -33,134 +27,56 @@ type Flow struct {
 var DefaultFlow = &Flow{}
 
 // Tasks returns all tasks sorted in lexicographical order.
-func Tasks() []*DefinedTask {
-	return DefaultFlow.Tasks()
-}
+func Tasks() []*DefinedTask { _ = "STUB: not implemented"; return nil }
 
 // Tasks returns all tasks sorted in lexicographical order.
-func (f *Flow) Tasks() []*DefinedTask {
-	var tasks []*DefinedTask
-	for _, task := range f.tasks {
-		tasks = append(tasks, task)
-	}
-	sort.Slice(tasks, func(i, j int) bool { return tasks[i].Name() < tasks[j].Name() })
-	return tasks
-}
+func (f *Flow) Tasks() []*DefinedTask { _ = "STUB: not implemented"; return nil }
 
 // Define registers the task. It panics in case of any error.
-func Define(task Task) *DefinedTask {
-	return DefaultFlow.Define(task)
-}
+func Define(task Task) *DefinedTask { _ = "STUB: not implemented"; return nil }
 
 // Define registers the task. It panics in case of any error.
 func (f *Flow) Define(task Task) *DefinedTask {
+	_ = "STUB: not implemented"
 	// validate
-	if task.Name == "" {
-		panic("task name cannot be empty")
-	}
-	if f.isDefined(task.Name, f) {
-		panic("task with the same name is already defined")
-	}
-	for _, dep := range task.Deps {
-		if !f.isDefined(dep.name, dep.flow) {
-			panic("dependency was not defined: " + dep.name)
-		}
-	}
-
-	taskCopy := &DefinedTask{
-		name:     task.Name,
-		usage:    task.Usage,
-		deps:     task.Deps,
-		action:   task.Action,
-		parallel: task.Parallel,
-		flow:     f,
-	}
-	f.tasks[task.Name] = taskCopy
-	return taskCopy
+	return nil
 }
 
 // Undefine unregisters the task. It panics in case of any error.
-func Undefine(task *DefinedTask) {
-	DefaultFlow.Undefine(task)
-}
+func Undefine(task *DefinedTask) { _ = "STUB: not implemented"; return }
 
 // Undefine unregisters the task. It panics in case of any error.
-func (f *Flow) Undefine(task *DefinedTask) {
-	if !f.isDefined(task.name, task.flow) {
-		panic("task was not defined: " + task.name)
-	}
+func (f *Flow) Undefine(task *DefinedTask) { _ = "STUB: not implemented"; return }
 
-	delete(f.tasks, task.name)
+func (f *Flow) isDefined(name string, flow *Flow) bool { _ = "STUB: not implemented"; return false }
 
-	for _, t := range f.tasks {
-		if len(t.deps) == 0 {
-			continue
-		}
-		var cleanDep []*DefinedTask
-		for _, dep := range t.deps {
-			if dep == task {
-				continue
-			}
-			cleanDep = append(cleanDep, dep)
-		}
-		t.deps = cleanDep
-	}
-
-	if f.defaultTask == task {
-		f.defaultTask = nil
-	}
-}
-
-func (f *Flow) isDefined(name string, flow *Flow) bool {
-	if f.tasks == nil {
-		f.tasks = map[string]*DefinedTask{}
-	}
-	if f != flow {
-		return false // defined in other flow
-	}
-	_, ok := f.tasks[name]
-	return ok
-}
+// defined in other flow
 
 // Output returns the destination used for printing messages.
 // [os.Stdout] is returned if output was not set or was set to nil.
-func Output() io.Writer {
-	return DefaultFlow.Output()
-}
+func Output() io.Writer { _ = "STUB: not implemented"; return *new(io.Writer) }
 
 // Output returns the destination used for printing messages.
 // [os.Stdout] is returned if output was not set or was set to nil.
-func (f *Flow) Output() io.Writer {
-	if f.output == nil {
-		return os.Stdout
-	}
-	return f.output
-}
+func (f *Flow) Output() io.Writer { _ = "STUB: not implemented"; return *new(io.Writer) }
 
 // SetOutput sets the output destination.
-func SetOutput(out io.Writer) {
-	DefaultFlow.SetOutput(out)
-}
+func SetOutput(out io.Writer) { _ = "STUB: not implemented"; return }
 
 // SetOutput sets the output destination.
 func (f *Flow) SetOutput(out io.Writer) {
-	f.output = out
+	_ = "STUB: not implemented"
+
+	// GetLogger returns the logger used by A's logging functions
+	// [CodeLineLogger] is returned if logger was not set or was set to nil.
+	return
 }
 
-// GetLogger returns the logger used by A's logging functions
-// [CodeLineLogger] is returned if logger was not set or was set to nil.
-func GetLogger() Logger {
-	return DefaultFlow.Logger()
-}
+func GetLogger() Logger { _ = "STUB: not implemented"; return *new(Logger) }
 
 // Logger returns the logger used by A's logging functions
 // [CodeLineLogger] is returned if logger was not set or was set to nil.
-func (f *Flow) Logger() Logger {
-	if f.logger == nil {
-		return &CodeLineLogger{}
-	}
-	return f.logger
-}
+func (f *Flow) Logger() Logger { _ = "STUB: not implemented"; return *new(Logger) }
 
 // SetLogger sets the logger used by A's logging functions.
 //
@@ -173,9 +89,7 @@ func (f *Flow) Logger() Logger {
 //	Skip(w io.Writer, args ...interface{})
 //	Skipf(w io.Writer, format string, args ...interface{})
 //	Helper()
-func SetLogger(logger Logger) {
-	DefaultFlow.SetLogger(logger)
-}
+func SetLogger(logger Logger) { _ = "STUB: not implemented"; return }
 
 // SetLogger sets the logger used by A's logging functions.
 //
@@ -189,98 +103,59 @@ func SetLogger(logger Logger) {
 //	Skipf(w io.Writer, format string, args ...interface{})
 //	Helper()
 func (f *Flow) SetLogger(logger Logger) {
-	f.logger = logger
+	_ = "STUB: not implemented"
+
+	// Usage returns a function that prints a usage message documenting the flow.
+	// It is called when an error occurs while parsing the flow.
+	// [Print] is returned if a function was not set or was set to nil.
+	return
 }
 
-// Usage returns a function that prints a usage message documenting the flow.
-// It is called when an error occurs while parsing the flow.
-// [Print] is returned if a function was not set or was set to nil.
-func Usage() func() {
-	return DefaultFlow.Usage()
-}
+func Usage() func() { _ = "STUB: not implemented"; return nil }
 
 // Usage returns a function that prints a usage message documenting the flow.
 // It is called when an error occurs while parsing the flow.
 // [Flow.Print] is returned if a function was not set or was set to nil.
-func (f *Flow) Usage() func() {
-	if f.usage == nil {
-		return f.Print
-	}
-	return f.usage
-}
+func (f *Flow) Usage() func() { _ = "STUB: not implemented"; return nil }
 
 // SetUsage sets the function called when an error occurs while parsing tasks.
-func SetUsage(fn func()) {
-	DefaultFlow.SetUsage(fn)
-}
+func SetUsage(fn func()) { _ = "STUB: not implemented"; return }
 
 // SetUsage sets the function called when an error occurs while parsing tasks.
 func (f *Flow) SetUsage(fn func()) {
-	f.usage = fn
+	_ = "STUB: not implemented"
+
+	// Default returns the default task.
+	// nil is returned if default was not set.
+	return
 }
+
+func Default() *DefinedTask { _ = "STUB: not implemented"; return nil }
 
 // Default returns the default task.
 // nil is returned if default was not set.
-func Default() *DefinedTask {
-	return DefaultFlow.Default()
-}
-
-// Default returns the default task.
-// nil is returned if default was not set.
-func (f *Flow) Default() *DefinedTask {
-	return f.defaultTask
-}
+func (f *Flow) Default() *DefinedTask { _ = "STUB: not implemented"; return nil }
 
 // SetDefault sets a task to run when none is explicitly provided.
 // It panics in case of any error.
-func SetDefault(task *DefinedTask) {
-	DefaultFlow.SetDefault(task)
-}
+func SetDefault(task *DefinedTask) { _ = "STUB: not implemented"; return }
 
 // SetDefault sets a task to run when none is explicitly provided.
 // Passing nil clears the default task.
 // It panics in case of any error.
-func (f *Flow) SetDefault(task *DefinedTask) {
-	if task == nil {
-		f.defaultTask = nil
-		return
-	}
-
-	if !f.isDefined(task.name, task.flow) {
-		panic("task was not defined: " + task.name)
-	}
-	f.defaultTask = task
-}
+func (f *Flow) SetDefault(task *DefinedTask) { _ = "STUB: not implemented"; return }
 
 // Use adds task runner middlewares (interceptors).
-func Use(middlewares ...Middleware) {
-	DefaultFlow.Use(middlewares...)
-}
+func Use(middlewares ...Middleware) { _ = "STUB: not implemented"; return }
 
 // Use adds task runner middlewares (interceptors).
-func (f *Flow) Use(middlewares ...Middleware) {
-	for _, m := range middlewares {
-		if m == nil {
-			panic("middleware cannot be nil")
-		}
-		f.middlewares = append(f.middlewares, m)
-	}
-}
+func (f *Flow) Use(middlewares ...Middleware) { _ = "STUB: not implemented"; return }
 
 // UseExecutor adds flow executor middlewares (interceptors).
-func UseExecutor(middlewares ...ExecutorMiddleware) {
-	DefaultFlow.UseExecutor(middlewares...)
-}
+func UseExecutor(middlewares ...ExecutorMiddleware) { _ = "STUB: not implemented"; return }
 
 // UseExecutor adds flow executor middlewares (interceptors).
-func (f *Flow) UseExecutor(middlewares ...ExecutorMiddleware) {
-	for _, m := range middlewares {
-		if m == nil {
-			panic("middleware cannot be nil")
-		}
-		f.executorMiddlewares = append(f.executorMiddlewares, m)
-	}
-}
+func (f *Flow) UseExecutor(middlewares ...ExecutorMiddleware) { _ = "STUB: not implemented"; return }
 
 // Option configures the flow execution.
 type Option interface {
@@ -289,9 +164,7 @@ type Option interface {
 
 type optionFunc func(*config)
 
-func (fn optionFunc) apply(cfg *config) {
-	fn(cfg)
-}
+func (fn optionFunc) apply(cfg *config) { _ = "STUB: not implemented"; return }
 
 type config struct {
 	noDeps    bool
@@ -299,27 +172,17 @@ type config struct {
 }
 
 // NoDeps is an option to skip processing of all dependencies.
-func NoDeps() Option {
-	return optionFunc(func(c *config) {
-		c.noDeps = true
-	})
-}
+func NoDeps() Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // Skip is an option to skip processing of given tasks.
-func Skip(tasks ...string) Option {
-	return optionFunc(func(c *config) {
-		c.skipTasks = append(c.skipTasks, tasks...)
-	})
-}
+func Skip(tasks ...string) Option { _ = "STUB: not implemented"; return *new(Option) }
 
 // FailError pointer is returned by [Flow.Execute] when a task failed.
 type FailError struct {
 	Task string
 }
 
-func (err *FailError) Error() string {
-	return "task failed: " + err.Task
-}
+func (err *FailError) Error() string { _ = "STUB: not implemented"; return "" }
 
 // Execute runs provided tasks and all their dependencies.
 // Each task is executed at most once.
@@ -327,7 +190,8 @@ func (err *FailError) Error() string {
 // [*FailError] if a task failed,
 // other errors in case of invalid input or context error.
 func Execute(ctx context.Context, tasks []string, opts ...Option) error {
-	return DefaultFlow.Execute(ctx, tasks, opts...)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Execute runs provided tasks and all their dependencies.
@@ -336,37 +200,13 @@ func Execute(ctx context.Context, tasks []string, opts ...Option) error {
 // [*FailError] if a task failed,
 // other errors in case of invalid input or context error.
 func (f *Flow) Execute(ctx context.Context, tasks []string, opts ...Option) error {
-	var middlewares []Middleware
-	middlewares = append(middlewares, f.middlewares...)
-
-	cfg := &config{}
-	for _, opt := range opts {
-		opt.apply(cfg)
-	}
-
-	// prepare runner
-	r := &executor{
-		defined:     f.tasks,
-		middlewares: middlewares,
-		defaultTask: f.defaultTask,
-	}
-	runner := r.Execute
-
-	// apply defined executor middlewares
-	for _, middleware := range f.executorMiddlewares {
-		runner = middleware(runner)
-	}
-
-	in := ExecuteInput{
-		Context:   ctx,
-		Tasks:     tasks,
-		SkipTasks: cfg.skipTasks,
-		NoDeps:    cfg.noDeps,
-		Output:    f.Output(),
-		Logger:    f.Logger(),
-	}
-	return runner(in)
+	_ = "STUB: not implemented"
+	return nil
 }
+
+// prepare runner
+
+// apply defined executor middlewares
 
 const (
 	exitCodePass    = 0
@@ -383,9 +223,7 @@ const (
 //   - 2 exit code means that the input was invalid.
 //
 // Calls [Usage] when invalid args are provided.
-func Main(args []string, opts ...Option) {
-	DefaultFlow.Main(args, opts...)
-}
+func Main(args []string, opts ...Option) { _ = "STUB: not implemented"; return }
 
 // Main runs provided tasks and all their dependencies.
 // Each task is executed at most once.
@@ -397,25 +235,15 @@ func Main(args []string, opts ...Option) {
 //
 // Calls [Usage] when invalid args are provided.
 func (f *Flow) Main(args []string, opts ...Option) {
-	out := f.Output()
+	_ = "STUB: not implemented"
 
 	// trap Ctrl+C and call cancel on the context
-	ctx, cancel := context.WithCancel(context.Background())
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt)
-	go func() {
-		<-c // first signal, cancel context
-		fmt.Fprintln(out, "first interrupt, graceful stop")
-		cancel()
-
-		<-c // second signal, hard exit
-		fmt.Fprintln(out, "second interrupt, exit")
-		os.Exit(exitCodeFail)
-	}()
-
-	exitCode := f.main(ctx, args, opts...)
-	os.Exit(exitCode)
+	return
 }
+
+// first signal, cancel context
+
+// second signal, hard exit
 
 func (f *Flow) main(ctx context.Context, args []string, opts ...Option) int {
 	err := f.Execute(ctx, args, opts...)
@@ -435,40 +263,8 @@ func (f *Flow) main(ctx context.Context, args []string, opts ...Option) int {
 
 // Print prints the information about the registered tasks.
 // Tasks with empty [Task.Usage] are not printed.
-func Print() {
-	DefaultFlow.Print()
-}
+func Print() { _ = "STUB: not implemented"; return }
 
 // Print prints the information about the registered tasks.
 // Tasks with empty [Task.Usage] are not printed.
-func (f *Flow) Print() {
-	out := f.Output()
-
-	if f.defaultTask != nil {
-		fmt.Fprintf(out, "Default task: %s\n", f.defaultTask.name)
-	}
-
-	fmt.Fprintln(out, "Tasks:")
-	var (
-		minwidth      = 5
-		tabwidth      = 0
-		padding       = 2
-		padchar  byte = ' '
-	)
-	w := tabwriter.NewWriter(out, minwidth, tabwidth, padding, padchar, 0)
-	for _, task := range f.Tasks() {
-		if task.Usage() == "" {
-			continue
-		}
-		deps := ""
-		if len(task.Deps()) > 0 {
-			depNames := make([]string, 0, len(task.Deps()))
-			for _, dep := range task.Deps() {
-				depNames = append(depNames, dep.Name())
-			}
-			deps = " (depends on: " + strings.Join(depNames, ", ") + ")"
-		}
-		fmt.Fprintf(w, "  %s\t%s\n", task.Name(), task.Usage()+deps)
-	}
-	w.Flush()
-}
+func (f *Flow) Print() { _ = "STUB: not implemented"; return }

@@ -23,20 +23,9 @@ package goyek
 //   - [task1, -v] -> tasks: [task1], rest: [-v]
 //   - [task1, --, arg1, arg2] -> tasks: [task1], rest: [--, arg1, arg2]
 //   - [task1, -v, --, arg1] -> tasks: [task1], rest: [-v, --, arg1]
-func SplitTasks(args []string) (tasks, rest []string) {
-	flagsStart := -1
-	for i, arg := range args {
-		// Check if this looks like a flag (starts with -) or separator (--).
-		// Single "-" is treated as a non-flag argument.
-		if len(arg) > 1 && arg[0] == '-' {
-			flagsStart = i
-			break
-		}
-		// This is a task.
-		tasks = append(tasks, arg)
-	}
-	if flagsStart >= 0 {
-		rest = args[flagsStart:]
-	}
-	return tasks, rest
-}
+func SplitTasks(args []string) (tasks, rest []string) { _ = "STUB: not implemented"; return nil, nil }
+
+// Check if this looks like a flag (starts with -) or separator (--).
+// Single "-" is treated as a non-flag argument.
+
+// This is a task.

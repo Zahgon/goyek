@@ -1,8 +1,6 @@
 package main
 
 import (
-	"os"
-
 	"github.com/goyek/goyek/v3"
 )
 
@@ -15,13 +13,4 @@ var _ = goyek.Define(goyek.Task{
 	},
 })
 
-func remove(a *goyek.A, path string) {
-	a.Helper()
-	if _, err := os.Stat(path); err != nil {
-		return
-	}
-	a.Log("Remove: " + path)
-	if err := os.RemoveAll(path); err != nil {
-		a.Error(err)
-	}
-}
+func remove(a *goyek.A, path string) { _ = "STUB: not implemented"; return }

@@ -3,9 +3,6 @@ package goyek
 import (
 	"context"
 	"io"
-	"sync"
-
-	"github.com/goyek/goyek/v3/internal"
 )
 
 // Task runner types.
@@ -48,10 +45,7 @@ type (
 // It can be also used as a building block for a custom
 // workflow runner if you are missing any functionalities
 // provided by Flow (like concurrent dependencies execution).
-func NewRunner(action func(a *A)) Runner {
-	r := taskRunner{action: action}
-	return r.run
-}
+func NewRunner(action func(a *A)) Runner { _ = "STUB: not implemented"; return *new(Runner) }
 
 type taskRunner struct {
 	action func(a *A)
@@ -59,53 +53,4 @@ type taskRunner struct {
 
 // run executes the action in a separate goroutine to enable
 // interuption using runtime.Goexit().
-func (r taskRunner) run(in Input) Result {
-	if r.action == nil {
-		return Result{}
-	}
-
-	ctx := in.Context
-	if ctx == nil {
-		ctx = context.Background()
-	}
-
-	out := in.Output
-	if out == nil {
-		out = io.Discard
-	}
-
-	logger := in.Logger
-	if logger == nil {
-		logger = FmtLogger{}
-	}
-
-	var failed, skipped bool
-	a := &A{
-		mu:       &sync.Mutex{},
-		failed:   &failed,
-		skipped:  &skipped,
-		cleanups: &[]func(){},
-		name:     in.TaskName,
-		output:   internal.SyncWriter(out),
-		logger:   logger,
-		parallel: in.Parallel,
-	}
-	a = a.WithContext(ctx)
-
-	finished, panicVal, panicStack := a.run(r.action)
-
-	res := Result{}
-	switch {
-	case a.Failed():
-		res.Status = StatusFailed
-	case a.Skipped():
-		res.Status = StatusSkipped
-	case finished:
-		res.Status = StatusPassed
-	default:
-		res.Status = StatusFailed
-		res.PanicValue = panicVal
-		res.PanicStack = panicStack
-	}
-	return res
-}
+func (r taskRunner) run(in Input) Result { _ = "STUB: not implemented"; return *new(Result) }
